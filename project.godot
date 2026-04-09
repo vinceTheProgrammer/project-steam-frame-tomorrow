@@ -21,6 +21,10 @@ run/main_scene.mobile="uid://bfh84h38gsyjx"
 XRToolsUserSettings="*uid://bqgb8i74tm0t"
 XRToolsRumbleManager="*uid://by853dk86g1qw"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot-xr-tools/plugin.cfg")
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
@@ -29,6 +33,7 @@ XRToolsRumbleManager="*uid://by853dk86g1qw"
 
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
 
 [xr]
 
