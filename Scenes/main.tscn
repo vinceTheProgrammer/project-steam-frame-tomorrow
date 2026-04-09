@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://b0wx13bhkpo18" path="res://Logic/main.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://dv7idg2mswb8s" path="res://xr_physical_movement.gd" id="2_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://1emhrur3sduu" path="res://Scenes/fade.tscn" id="3_8gbba"]
+[ext_resource type="PackedScene" uid="uid://bq86r4yll8po" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_fullglove_low.tscn" id="4_kry3j"]
+[ext_resource type="PackedScene" uid="uid://xqimcf20s2jp" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_fullglove_low.tscn" id="5_21xkr"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0xm2m"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -29,9 +31,6 @@ albedo_color = Color(0.24705882, 0.5411765, 0.80784315, 0.3254902)
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_0xm2m"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_8gbba"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_lquwl"]
-size = Vector3(0.1, 0.1, 0.1)
 
 [node name="Main" type="Node3D" unique_id=10077725]
 script = ExtResource("1_ig7tw")
@@ -85,12 +84,10 @@ mesh = SubResource("SphereMesh_8gbba")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, 0.5)
 tracker = &"left_hand"
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/XRPlayerCharacter/LeftHand" unique_id=915614347]
-mesh = SubResource("BoxMesh_lquwl")
+[node name="LeftHand" parent="Player/XRPlayerCharacter/LeftHand" unique_id=742313474 instance=ExtResource("4_kry3j")]
 
 [node name="RightHand" type="XRController3D" parent="Player/XRPlayerCharacter" unique_id=2085542541]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.5)
 tracker = &"right_hand"
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/XRPlayerCharacter/RightHand" unique_id=258817276]
-mesh = SubResource("BoxMesh_lquwl")
+[node name="RightHand" parent="Player/XRPlayerCharacter/RightHand" unique_id=807306063 instance=ExtResource("5_21xkr")]
