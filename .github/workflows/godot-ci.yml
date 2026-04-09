@@ -153,25 +153,33 @@ jobs:
         uses: actions/checkout@v4
         with:
           lfs: true
-          
+
       - name: Inject signing config
         run: |
           awk '
-          BEGIN { in_android=0 }
-          /\[preset\.[0-9]+\.options\]/ { in_android=0 }
+          BEGIN { in_android = 0; added = 0 }
 
-          /\[preset\.[0-9]+\]/ { preset=$0 }
-          /name="Android"/ { in_android=1 }
+          /\[preset\.[0-9]+\]/ { 
+            current_preset = $0 
+            in_android = 0 
+          }
 
-          {
-            print
-            if (in_android && /\[preset\.[0-9]+\.options\]/ && !added) {
-              print "keystore/release=\"/root/release.keystore\""
-              print "keystore/release_user=\"${{ secrets.SECRET_RELEASE_KEYSTORE_USER }}\""
-              print "keystore/release_password=\"${{ secrets.SECRET_RELEASE_KEYSTORE_PASSWORD }}\""
-              added=1
+          /name="Android"/ {
+            if (current_preset ~ /\[preset\.[0-9]+\]/) {
+              in_android = 1
             }
           }
+
+          in_android && /\[preset\.[0-9]+\.options\]/ && !added {
+            print
+            print "keystore/release=\"/root/release.keystore\""
+            print "keystore/release_user=\"${{ secrets.SECRET_RELEASE_KEYSTORE_USER }}\""
+            print "keystore/release_password=\"${{ secrets.SECRET_RELEASE_KEYSTORE_PASSWORD }}\""
+            added = 1
+            next
+          }
+
+          { print }
           ' export_presets.cfg > tmp && mv tmp export_presets.cfg
 
       - name: Setup Java
