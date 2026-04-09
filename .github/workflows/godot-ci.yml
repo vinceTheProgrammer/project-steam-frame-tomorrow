@@ -60,7 +60,7 @@ jobs:
           mkdir -v -p build/linux-x86_64
           EXPORT_DIR="$(readlink -f build)"
           cd $PROJECT_PATH
-          godot --headless --verbose --export-release "Linux x86_64" "$EXPORT_DIR/linux-x86_64/$EXPORT_NAME.x86_64"
+          godot --headless --verbose --export-release "Linux x86_64" "$EXPORT_DIR/linux-x86_64/$EXPORT_NAME-linux-x86_64"
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
