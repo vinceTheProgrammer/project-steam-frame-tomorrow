@@ -153,6 +153,26 @@ jobs:
         uses: actions/checkout@v4
         with:
           lfs: true
+          
+      - name: Inject signing config
+        run: |
+          awk '
+          BEGIN { in_android=0 }
+          /\[preset\.[0-9]+\.options\]/ { in_android=0 }
+
+          /\[preset\.[0-9]+\]/ { preset=$0 }
+          /name="Android"/ { in_android=1 }
+
+          {
+            print
+            if (in_android && /\[preset\.[0-9]+\.options\]/ && !added) {
+              print "keystore/release=\"/root/release.keystore\""
+              print "keystore/release_user=\"${{ secrets.SECRET_RELEASE_KEYSTORE_USER }}\""
+              print "keystore/release_password=\"${{ secrets.SECRET_RELEASE_KEYSTORE_PASSWORD }}\""
+              added=1
+            }
+          }
+          ' export_presets.cfg > tmp && mv tmp export_presets.cfg
 
       - name: Setup Java
         run: |
@@ -185,11 +205,6 @@ jobs:
           mkdir -v -p build/android
           EXPORT_DIR="$(readlink -f build)"
           cd $PROJECT_PATH
-
-          # Inject signing config
-          sed 's@keystore/release=".*"@keystore/release="/root/release.keystore"@g' -i export_presets.cfg
-          sed 's@keystore/release_user=".*"@keystore/release_user="${{ secrets.SECRET_RELEASE_KEYSTORE_USER }}"@g' -i export_presets.cfg
-          sed 's@keystore/release_password=".*"@keystore/release_password="${{ secrets.SECRET_RELEASE_KEYSTORE_PASSWORD }}"@g' -i export_presets.cfg
 
           godot --headless --verbose --export-release "Android" "$EXPORT_DIR/android/$EXPORT_NAME.apk"
 
