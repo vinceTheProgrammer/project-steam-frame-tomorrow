@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://bfh84h38gsyjx"]
 
-[ext_resource type="Script" uid="uid://b0wx13bhkpo18" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://b0wx13bhkpo18" path="res://Scripts/main.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://dv7idg2mswb8s" path="res://xr_physical_movement.gd" id="2_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://1emhrur3sduu" path="res://Scenes/fade.tscn" id="3_8gbba"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0xm2m"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -57,7 +58,7 @@ shadow_enabled = true
 mesh = SubResource("BoxMesh_ig7tw")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="World/Level" unique_id=591109370]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0823383, -1.2339618)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6439285, -1.3842766)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="World/Level/StaticBody3D" unique_id=1781940037]
 shape = SubResource("BoxShape3D_0xm2m")
@@ -69,19 +70,24 @@ mesh = SubResource("BoxMesh_h2yge")
 [node name="Player" type="CharacterBody3D" parent="." unique_id=525201729]
 
 [node name="CollisionMesh" type="CollisionShape3D" parent="Player" unique_id=1945246629]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_ig7tw")
 
 [node name="CollisionMeshView" type="MeshInstance3D" parent="Player" unique_id=1613053596]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 1, 0)
 material_override = SubResource("StandardMaterial3D_ig7tw")
 mesh = SubResource("CapsuleMesh_0xm2m")
 
-[node name="XRPlayerCharacter" type="XROrigin3D" parent="Player" unique_id=1944631639]
+[node name="XRPlayerCharacter" type="XROrigin3D" parent="Player" unique_id=1944631639 node_paths=PackedStringArray("fade_effect")]
 script = ExtResource("2_0xm2m")
+max_distance = 0.4
+fade_distance = 0.2
+fade_effect = NodePath("XRCamera3D/Fade")
 
 [node name="XRCamera3D" type="XRCamera3D" parent="Player/XRPlayerCharacter" unique_id=977836871]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+
+[node name="Fade" parent="Player/XRPlayerCharacter/XRCamera3D" unique_id=1172364733 instance=ExtResource("3_8gbba")]
 
 [node name="LeftHand" type="XRController3D" parent="Player/XRPlayerCharacter" unique_id=1702826978]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, 0.5)
