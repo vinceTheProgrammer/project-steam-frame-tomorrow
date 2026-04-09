@@ -1,3 +1,48 @@
 [gd_scene format=3 uid="uid://bfh84h38gsyjx"]
 
-[node name="Node3D" type="Node3D" unique_id=10077725]
+[ext_resource type="Script" uid="uid://b0wx13bhkpo18" path="res://main.gd" id="1_ig7tw"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0xm2m"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_h2yge"]
+sky_material = SubResource("ProceduralSkyMaterial_0xm2m")
+
+[sub_resource type="Environment" id="Environment_1bvp3"]
+background_mode = 2
+sky = SubResource("Sky_h2yge")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_lquwl"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[node name="Main" type="Node3D" unique_id=10077725]
+script = ExtResource("1_ig7tw")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=862706280]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=441761338]
+environment = SubResource("Environment_1bvp3")
+
+[node name="XROrigin3D" type="XROrigin3D" parent="." unique_id=1944631639]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D" unique_id=977836871]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+
+[node name="LeftHand" type="XRController3D" parent="XROrigin3D" unique_id=1702826978]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, 0.5)
+tracker = &"left_hand"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="XROrigin3D/LeftHand" unique_id=915614347]
+mesh = SubResource("BoxMesh_lquwl")
+
+[node name="RightHand" type="XRController3D" parent="XROrigin3D" unique_id=2085542541]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.5)
+tracker = &"right_hand"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="XROrigin3D/RightHand" unique_id=258817276]
+mesh = SubResource("BoxMesh_lquwl")
