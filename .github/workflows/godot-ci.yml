@@ -57,15 +57,15 @@ jobs:
           mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
       - name: Linux Build
         run: |
-          mkdir -v -p build/linux
+          mkdir -v -p build/linux-x86_64
           EXPORT_DIR="$(readlink -f build)"
           cd $PROJECT_PATH
-          godot --headless --verbose --export-release "Linux x86_64" "$EXPORT_DIR/linux/$EXPORT_NAME.x86_64"
+          godot --headless --verbose --export-release "Linux x86_64" "$EXPORT_DIR/linux-x86_64/$EXPORT_NAME.x86_64"
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: linux
-          path: build/linux
+          name: linux-x86_64
+          path: build/linux-x86_64
 
   export-linux-arm:
     name: Linux arm64 Export
@@ -83,15 +83,15 @@ jobs:
           mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
       - name: Linux Build
         run: |
-          mkdir -v -p build/linux
+          mkdir -v -p build/linux-arm64
           EXPORT_DIR="$(readlink -f build)"
           cd $PROJECT_PATH
-          godot --headless --verbose --export-release "Linux arm64" "$EXPORT_DIR/linux/$EXPORT_NAME.arm64"
+          godot --headless --verbose --export-release "Linux arm64" "$EXPORT_DIR/linux-arm64/$EXPORT_NAME-linux-arm64"
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: linux
-          path: build/linux
+          name: linux-arm64
+          path: build/linux-arm64
     
   export-android-debug:
     name: Android Debug Export
@@ -228,7 +228,7 @@ jobs:
   create-release:
     name: Create Release
     runs-on: ubuntu-latest
-    needs: [export-windows, export-linux, export-mac, export-android]
+    needs: [export-windows, export-linux, export-linux-arm, export-mac, export-android]
 
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
@@ -268,7 +268,8 @@ jobs:
           name: Release ${{ steps.tag.outputs.tag }}
           files: |
             windows/**
-            linux/**
+            linux-x86_64/**
+            linux-arm64/**
             mac/**
             android/**
         env:
