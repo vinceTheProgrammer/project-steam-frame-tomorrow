@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bfh84h38gsyjx"]
 
 [ext_resource type="Script" uid="uid://b0wx13bhkpo18" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://dv7idg2mswb8s" path="res://xr_physical_movement.gd" id="2_0xm2m"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0xm2m"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -15,34 +16,83 @@ sky = SubResource("Sky_h2yge")
 tonemap_mode = 2
 glow_enabled = true
 
+[sub_resource type="BoxMesh" id="BoxMesh_ig7tw"]
+size = Vector3(8.805, 1, 9.545)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0xm2m"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_h2yge"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ig7tw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ig7tw"]
+transparency = 1
+albedo_color = Color(0.24705882, 0.5411765, 0.80784315, 0.3254902)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_0xm2m"]
+
 [sub_resource type="BoxMesh" id="BoxMesh_lquwl"]
 size = Vector3(0.1, 0.1, 0.1)
 
 [node name="Main" type="Node3D" unique_id=10077725]
 script = ExtResource("1_ig7tw")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=862706280]
-transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
-shadow_enabled = true
+[node name="Camera3D" type="Camera3D" parent="." unique_id=109871031]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=441761338]
+[node name="World" type="Node3D" parent="." unique_id=509850411]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.51830477, 0)
+
+[node name="Lighting_Environment" type="Node3D" parent="World" unique_id=328475009]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="World/Lighting_Environment" unique_id=441761338]
 environment = SubResource("Environment_1bvp3")
 
-[node name="XROrigin3D" type="XROrigin3D" parent="." unique_id=1944631639]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="World/Lighting_Environment" unique_id=862706280]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0.51830477, 0)
+shadow_enabled = true
 
-[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D" unique_id=977836871]
+[node name="Level" type="Node3D" parent="World" unique_id=1967862650]
+
+[node name="Floor" type="MeshInstance3D" parent="World/Level" unique_id=753986315]
+mesh = SubResource("BoxMesh_ig7tw")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Level" unique_id=591109370]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0823383, -1.2339618)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Level/StaticBody3D" unique_id=1781940037]
+shape = SubResource("BoxShape3D_0xm2m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Level/StaticBody3D" unique_id=1104659810]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3086843, 0)
+mesh = SubResource("BoxMesh_h2yge")
+
+[node name="Player" type="CharacterBody3D" parent="." unique_id=525201729]
+
+[node name="CollisionMesh" type="CollisionShape3D" parent="Player" unique_id=1945246629]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_ig7tw")
+
+[node name="CollisionMeshView" type="MeshInstance3D" parent="Player" unique_id=1613053596]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+material_override = SubResource("StandardMaterial3D_ig7tw")
+mesh = SubResource("CapsuleMesh_0xm2m")
+
+[node name="XRPlayerCharacter" type="XROrigin3D" parent="Player" unique_id=1944631639]
+script = ExtResource("2_0xm2m")
+
+[node name="XRCamera3D" type="XRCamera3D" parent="Player/XRPlayerCharacter" unique_id=977836871]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
 
-[node name="LeftHand" type="XRController3D" parent="XROrigin3D" unique_id=1702826978]
+[node name="LeftHand" type="XRController3D" parent="Player/XRPlayerCharacter" unique_id=1702826978]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, 0.5)
 tracker = &"left_hand"
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="XROrigin3D/LeftHand" unique_id=915614347]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/XRPlayerCharacter/LeftHand" unique_id=915614347]
 mesh = SubResource("BoxMesh_lquwl")
 
-[node name="RightHand" type="XRController3D" parent="XROrigin3D" unique_id=2085542541]
+[node name="RightHand" type="XRController3D" parent="Player/XRPlayerCharacter" unique_id=2085542541]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.5)
 tracker = &"right_hand"
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="XROrigin3D/RightHand" unique_id=258817276]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/XRPlayerCharacter/RightHand" unique_id=258817276]
 mesh = SubResource("BoxMesh_lquwl")
