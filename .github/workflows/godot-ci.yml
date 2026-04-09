@@ -103,7 +103,7 @@ jobs:
     container:
       image: barichello/godot-ci:4.6
 
-    if: ${{ secrets.SECRET_RELEASE_KEYSTORE_BASE64 != '' }}
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
       - name: Checkout
