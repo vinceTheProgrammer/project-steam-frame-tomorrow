@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://1emhrur3sduu"]
 
-[ext_resource type="Script" uid="uid://ckxtjqfyu1ugu" path="res://Scripts/fade.gd" id="1_rdiqc"]
-[ext_resource type="Shader" uid="uid://dd7jcgkpgfgid" path="res://Scripts/fade.gdshader" id="2_1hncu"]
+[ext_resource type="Script" uid="uid://ckxtjqfyu1ugu" path="res://Logic/fade.gd" id="1_rdiqc"]
+[ext_resource type="Shader" uid="uid://dd7jcgkpgfgid" path="res://Logic/fade.gdshader" id="2_1hncu"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_plv4q"]
 render_priority = 90
