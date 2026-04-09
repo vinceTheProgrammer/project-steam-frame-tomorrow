@@ -79,6 +79,17 @@ jobs:
         with:
           lfs: true
 
+      - name: Install Android build template
+        run: |
+          if [ ! -d "android/build" ]; then
+            echo "Installing Android build template..."
+
+            mkdir -p android
+            echo "${GODOT_VERSION}.stable" > android/.build_version
+
+            unzip -o /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable/android_source.zip -d android/build
+          fi
+
       - name: Setup export templates
         run: |
           mkdir -v -p ~/.local/share/godot/export_templates/
@@ -110,6 +121,17 @@ jobs:
         uses: actions/checkout@v4
         with:
           lfs: true
+
+      - name: Install Android build template
+        run: |
+          if [ ! -d "android/build" ]; then
+            echo "Installing Android build template..."
+
+            mkdir -p android
+            echo "${GODOT_VERSION}.stable" > android/.build_version
+
+            unzip -o /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable/android_source.zip -d android/build
+          fi
 
       - name: Setup export templates
         run: |
