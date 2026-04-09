@@ -1,6 +1,13 @@
 class_name XRCharacterController
 extends XROrigin3D
 
+#How far away before fade to black. Customizable
+@export_range(0.01, 1.0, 0.01, "suffix:m") var max_distance = 0.2
+
+@export_range(0.01, 1.0, 0.01, "suffix:m") var fade_distance = 0.1
+
+@export var fade_effect : FadeEffect
+
 #Sends out an in-engine warning if someone attempts to parent this to anything other than the character body.
 func _get_configuration_warnings():
 	var warnings : PackedStringArray
@@ -58,5 +65,13 @@ func _physics_process(delta: float) -> void:
 	#Apply this transform to character body
 	character_body.transform.basis = rotation_transform.basis * character_body.transform.basis
 	
-	
+	#Apply inverse to origin
 	transform = rotation_transform.inverse() * transform
+	
+	#Calculate how far the player is from target location
+	var distance = (character_body.global_position - new_position).length()
+	
+	var fade = clamp((distance - max_distance) / fade_distance, 0.0, 1.0)
+	if fade_effect:
+		fade_effect.fade = fade
+	

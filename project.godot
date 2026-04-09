@@ -14,6 +14,7 @@ config/name="Project Steam Frame Tomorrow"
 run/main_scene="uid://bfh84h38gsyjx"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
+run/main_scene.mobile="uid://bfh84h38gsyjx"
 
 [physics]
 
